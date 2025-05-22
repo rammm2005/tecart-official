@@ -16,6 +16,15 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { WorkshopCategory } from './collections/Workshop-category'
+import { Absences } from './collections/absence'
+import { FAQ } from './collections/faq'
+import { Workshops } from './collections/workshop'
+import { Achievements } from './collections/achivement'
+import { Divisions } from './collections/divisions'
+import { Leaderboard } from './collections/leaderboard'
+import { OrganizationMembers } from './collections/organization'
+import { Projects } from './collections/project'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -62,7 +71,22 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    WorkshopCategory,
+    Absences,
+    FAQ,
+    Workshops,
+    Achievements,
+    Divisions,
+    Leaderboard,
+    OrganizationMembers,
+    Projects,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

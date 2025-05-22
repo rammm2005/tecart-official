@@ -37,7 +37,7 @@ export const Users: CollectionConfig = {
       type: 'array',
       fields: [
         {
-          name: 'collection',
+          name: 'targetCollection',
           type: 'text',
           required: true,
         },

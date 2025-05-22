@@ -72,6 +72,15 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    'workshop-category': WorkshopCategory;
+    absences: Absence;
+    faq: Faq;
+    workshops: Workshop;
+    achievements: Achievement;
+    divisions: Division;
+    leaderboard: Leaderboard;
+    'organization-members': OrganizationMember;
+    projects: Project;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -88,6 +97,15 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'workshop-category': WorkshopCategorySelect<false> | WorkshopCategorySelect<true>;
+    absences: AbsencesSelect<false> | AbsencesSelect<true>;
+    faq: FaqSelect<false> | FaqSelect<true>;
+    workshops: WorkshopsSelect<false> | WorkshopsSelect<true>;
+    achievements: AchievementsSelect<false> | AchievementsSelect<true>;
+    divisions: DivisionsSelect<false> | DivisionsSelect<true>;
+    leaderboard: LeaderboardSelect<false> | LeaderboardSelect<true>;
+    'organization-members': OrganizationMembersSelect<false> | OrganizationMembersSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -374,6 +392,27 @@ export interface Category {
 export interface User {
   id: string;
   name?: string | null;
+  role: 'admin' | 'staf' | 'civitas';
+  permissions?:
+    | {
+        targetCollection: string;
+        permissions?: {
+          create?: boolean | null;
+          admin?: boolean | null;
+          read?: boolean | null;
+          update?: boolean | null;
+          delete?: boolean | null;
+          publish?: boolean | null;
+          readVersions?: boolean | null;
+          unlock?: boolean | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  profileImage?: (string | null) | Media;
+  bio?: string | null;
+  ig?: string | null;
+  github?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -729,6 +768,192 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshop-category".
+ */
+export interface WorkshopCategory {
+  id: string;
+  title: string;
+  image?: (string | null) | Media;
+  description?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "absences".
+ */
+export interface Absence {
+  id: string;
+  user: string | User;
+  workshop: string | Workshop;
+  status: 'present' | 'absent';
+  qrCodeImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshops".
+ */
+export interface Workshop {
+  id: string;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  images?:
+    | {
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  startDate: string;
+  startTime?: string | null;
+  locationType?: ('online' | 'on spot') | null;
+  locationLink?: string | null;
+  category?: (string | null) | WorkshopCategory;
+  points: number;
+  autoRegisterOnClick?: boolean | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq".
+ */
+export interface Faq {
+  id: string;
+  question: string;
+  answer: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  category?: string | null;
+  subCategory?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements".
+ */
+export interface Achievement {
+  id: string;
+  description?: string | null;
+  image?: (string | null) | Media;
+  date?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "divisions".
+ */
+export interface Division {
+  id: string;
+  name: string;
+  description?: string | null;
+  tools?:
+    | {
+        toolName?: string | null;
+        toolImage?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leaderboard".
+ */
+export interface Leaderboard {
+  id: string;
+  user: string | User;
+  points: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization-members".
+ */
+export interface OrganizationMember {
+  id: string;
+  name: string;
+  instagram?: string | null;
+  github?: string | null;
+  role: 'ketua' | 'wakil' | 'sekretaris' | 'bendahara' | 'koordinator' | 'anggota';
+  /**
+   * Contoh: Sekretaris 1, Bendahara 2, Koordinator UI/UX
+   */
+  positionDetail?: string | null;
+  division?: (string | null) | Division;
+  photo?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: string;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  division?: (string | null) | Division;
+  image?: (string | null) | Media;
+  link?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -919,6 +1144,42 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'workshop-category';
+        value: string | WorkshopCategory;
+      } | null)
+    | ({
+        relationTo: 'absences';
+        value: string | Absence;
+      } | null)
+    | ({
+        relationTo: 'faq';
+        value: string | Faq;
+      } | null)
+    | ({
+        relationTo: 'workshops';
+        value: string | Workshop;
+      } | null)
+    | ({
+        relationTo: 'achievements';
+        value: string | Achievement;
+      } | null)
+    | ({
+        relationTo: 'divisions';
+        value: string | Division;
+      } | null)
+    | ({
+        relationTo: 'leaderboard';
+        value: string | Leaderboard;
+      } | null)
+    | ({
+        relationTo: 'organization-members';
+        value: string | OrganizationMember;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: string | Project;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1267,6 +1528,29 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
+  permissions?:
+    | T
+    | {
+        targetCollection?: T;
+        permissions?:
+          | T
+          | {
+              create?: T;
+              admin?: T;
+              read?: T;
+              update?: T;
+              delete?: T;
+              publish?: T;
+              readVersions?: T;
+              unlock?: T;
+            };
+        id?: T;
+      };
+  profileImage?: T;
+  bio?: T;
+  ig?: T;
+  github?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1276,6 +1560,138 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshop-category_select".
+ */
+export interface WorkshopCategorySelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
+  description?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "absences_select".
+ */
+export interface AbsencesSelect<T extends boolean = true> {
+  user?: T;
+  workshop?: T;
+  status?: T;
+  qrCodeImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq_select".
+ */
+export interface FaqSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  category?: T;
+  subCategory?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshops_select".
+ */
+export interface WorkshopsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  startDate?: T;
+  startTime?: T;
+  locationType?: T;
+  locationLink?: T;
+  category?: T;
+  points?: T;
+  autoRegisterOnClick?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "achievements_select".
+ */
+export interface AchievementsSelect<T extends boolean = true> {
+  description?: T;
+  image?: T;
+  date?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "divisions_select".
+ */
+export interface DivisionsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  tools?:
+    | T
+    | {
+        toolName?: T;
+        toolImage?: T;
+        id?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leaderboard_select".
+ */
+export interface LeaderboardSelect<T extends boolean = true> {
+  user?: T;
+  points?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization-members_select".
+ */
+export interface OrganizationMembersSelect<T extends boolean = true> {
+  name?: T;
+  instagram?: T;
+  github?: T;
+  role?: T;
+  positionDetail?: T;
+  division?: T;
+  photo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  division?: T;
+  image?: T;
+  link?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
