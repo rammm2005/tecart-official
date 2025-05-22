@@ -6,6 +6,7 @@ import { home } from './home'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
 import { imageHero1 } from './image-hero-1'
+import { techartLogo } from './logo-image'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
@@ -80,7 +81,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding media...`)
 
-  const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer] = await Promise.all([
+  const [image1Buffer, image2Buffer, image3Buffer, hero1Buffer, LogoBuffer] = await Promise.all([
     fetchFileByURL(
       'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-post1.webp',
     ),
@@ -93,15 +94,26 @@ export const seed = async ({
     fetchFileByURL(
       'https://raw.githubusercontent.com/payloadcms/payload/refs/heads/main/templates/website/src/endpoints/seed/image-hero1.webp',
     ),
+    fetchFileByURL(
+      'https://instagram.fdps5-1.fna.fbcdn.net/v/t51.2885-19/331283982_649959900220963_6372442100569569060_n.jpg?_nc_ht=instagram.fdps5-1.fna.fbcdn.net&_nc_cat=107&_nc_oc=Q6cZ2QHSldkM-7YetSa94lEr0k6IMVsVgO0bcA0Yr3uUDvES3uhbzk9_CFTk-awLReSGhVA&_nc_ohc=8Syu7Vf375QQ7kNvwGCK2Ht&_nc_gid=m2KMTLDF-h2_Bdxgz9hBLQ&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfLhr0L3Y8iFiz5l5H1MWkDaovwwF1pGnTwTeqFaIIWopw&oe=68350988&_nc_sid=7a9f4b',
+    ),
   ])
+
+  const imageLogoDoc = await payload.create({
+    collection: 'media',
+    data: techartLogo,
+    file: LogoBuffer,
+  })
 
   const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
     payload.create({
       collection: 'users',
       data: {
-        name: 'Demo Author',
-        email: 'demo-author@example.com',
-        password: 'password',
+        name: 'Tech Art Admin',
+        email: 'tecartadmin2025@gmail.com',
+        password: '12345678',
+        role: 'admin',
+        profileImage: imageLogoDoc.id,
       },
     }),
     payload.create({
