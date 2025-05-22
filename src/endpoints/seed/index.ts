@@ -69,15 +69,27 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding demo author and user...`)
 
-  await payload.delete({
-    collection: 'users',
-    depth: 0,
-    where: {
-      email: {
-        equals: 'demo-author@example.com',
+  await Promise.all([
+    payload.delete({
+      collection: 'users',
+      depth: 0,
+      where: {
+        email: {
+          equals: 'demo-author@example.com',
+        },
       },
-    },
-  })
+    }),
+
+    payload.delete({
+      collection: 'users',
+      depth: 0,
+      where: {
+        email: {
+          equals: 'tecartadmin2025@gmail.com',
+        },
+      },
+    }),
+  ])
 
   payload.logger.info(`— Seeding media...`)
 
